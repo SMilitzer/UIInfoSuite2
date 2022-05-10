@@ -60,6 +60,9 @@
   "ShowRobinBuildingStatusIcon": "Show Robin building status",
   "ShowLuckIcon": "Show luck icon",
   "ShowExactValue": "Show exact value",
+  "ShowHarvestableCrops": "Show harvestable crops",
+  "ShowHarvestableTrees": "Show harvestable trees",
+  "ShowFishPondsWithNeeds": "Show fish ponds with needs",
   //Others
   "LevelUp": "Level Up"
 }

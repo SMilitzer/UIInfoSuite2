@@ -38,6 +38,9 @@ namespace UIInfoSuite.Options
         private readonly ShowToolUpgradeStatus _showToolUpgradeStatus;
         private readonly ShowRobinBuildingStatusIcon _showRobinBuildingStatusIcon;
         private readonly ShowTodaysGifts _showTodaysGift;
+        private readonly ShowHarvestableCropsStatus _showHarvestableCrops;
+        private readonly ShowHarvestableTreesStatus _showHarvestableTrees;
+        private readonly ShowPondsWithNeedsStatus _showPondsWithNeeds;
 
         public ModOptionsPageHandler(IModHelper helper, ModOptions _options, bool showPersonalConfigButton)
         {
@@ -64,6 +67,9 @@ namespace UIInfoSuite.Options
             _showToolUpgradeStatus = new ShowToolUpgradeStatus(helper);
             _showRobinBuildingStatusIcon = new ShowRobinBuildingStatusIcon(helper);
             _showTodaysGift = new ShowTodaysGifts(helper);
+            _showHarvestableCrops = new ShowHarvestableCropsStatus(helper);
+            _showHarvestableTrees = new ShowHarvestableTreesStatus(helper);
+            _showPondsWithNeeds = new ShowPondsWithNeedsStatus(helper);
 
             _elementsToDispose = new List<IDisposable>()
             {
@@ -81,7 +87,10 @@ namespace UIInfoSuite.Options
                 _shopHarvestPrices,
                 _showQueenOfSauceIcon,
                 _showToolUpgradeStatus,
-                _showRobinBuildingStatusIcon
+                _showRobinBuildingStatusIcon,
+                _showHarvestableCrops,
+                _showHarvestableTrees,
+                _showPondsWithNeeds
             };
 
             int whichOption = 1;
@@ -117,6 +126,9 @@ namespace UIInfoSuite.Options
             _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(_options.ShowToolUpgradeStatus)), whichOption++, _showToolUpgradeStatus.ToggleOption, () => _options.ShowToolUpgradeStatus, v => _options.ShowToolUpgradeStatus = v));
             _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(_options.ShowRobinBuildingStatusIcon)), whichOption++, _showRobinBuildingStatusIcon.ToggleOption, () => _options.ShowRobinBuildingStatusIcon, v => _options.ShowRobinBuildingStatusIcon = v));
             _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(_options.ShowTodaysGifts)), whichOption++, _showTodaysGift.ToggleOption, () => _options.ShowTodaysGifts, v => _options.ShowTodaysGifts = v));
+            _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(_options.ShowHarvestableCrops)), whichOption++, _showHarvestableCrops.ToggleOption, () => _options.ShowHarvestableCrops, v => _options.ShowHarvestableCrops = v));
+            _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(_options.ShowHarvestableTrees)), whichOption++, _showHarvestableTrees.ToggleOption, () => _options.ShowHarvestableTrees, v => _options.ShowHarvestableTrees = v));
+            _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(_options.ShowFishPondsWithNeeds)), whichOption++, _showPondsWithNeeds.ToggleOption, () => _options.ShowFishPondsWithNeeds, v => _options.ShowFishPondsWithNeeds = v));
         }
 
 

@@ -36,6 +36,9 @@ namespace UIInfoSuite.Options
         public bool ShowRobinBuildingStatusIcon { get; set; } = true;
         public bool ShowTodaysGifts { get; set; } = true;
         public bool HideBirthdayIfFullFriendShip { get; set; } = true;
+        public bool ShowHarvestableCrops { get; set; } = true;
+        public bool ShowHarvestableTrees { get; set; } = true;
+        public bool ShowFishPondsWithNeeds { get; set; } = true;
         public Dictionary<string, bool> ShowLocationOfFriends { get; set; } = new Dictionary<string, bool>();
 
         public object Get(string propertyName)
@@ -75,7 +78,10 @@ namespace UIInfoSuite.Options
                 HideMerchantWhenVisited == options.HideMerchantWhenVisited &&
                 ShowExactValue == options.ShowExactValue &&
                 ShowRobinBuildingStatusIcon == options.ShowRobinBuildingStatusIcon &&
-                ShowTodaysGifts == options.ShowTodaysGifts)
+                ShowTodaysGifts == options.ShowTodaysGifts &&
+                ShowHarvestableCrops == options.ShowHarvestableCrops &&
+                ShowHarvestableTrees == options.ShowHarvestableTrees &&
+                ShowFishPondsWithNeeds == options.ShowFishPondsWithNeeds)
             {
                 if (ShowLocationOfFriends.Count != options.ShowLocationOfFriends.Count)
                     return false;
