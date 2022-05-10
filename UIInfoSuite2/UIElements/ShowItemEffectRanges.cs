@@ -137,7 +137,7 @@ namespace UIInfoSuite.UIElements
                 Vector2 validTile = Utility.snapToInt(Utility.GetNearbyValidPlacementPosition(Game1.player, Game1.currentLocation, currentItem, (int)currentTile.X * Game1.tileSize, (int)currentTile.Y * Game1.tileSize)) / Game1.tileSize;
                 Game1.isCheckingNonMousePlacement = false;
 
-                if (itemName.IndexOf("arecrow", StringComparison.OrdinalIgnoreCase) >= 0)
+                if ((itemName.IndexOf("arecrow", StringComparison.OrdinalIgnoreCase) >= 0) && (itemName.IndexOf("sprinkler", StringComparison.OrdinalIgnoreCase) < 0))
                 {
                     arrayToUse = itemName.Contains("eluxe") ? GetDistanceArray(ObjectsWithDistance.DeluxeScarecrow) : GetDistanceArray(ObjectsWithDistance.Scarecrow);
                     AddTilesToHighlightedArea(arrayToUse, (int)validTile.X, (int)validTile.Y);
@@ -152,13 +152,13 @@ namespace UIInfoSuite.UIElements
                 else if (itemName.IndexOf("sprinkler", StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     // Relative tile positions to the placable items locations - need to pass coordinates
-                    AddTilesToHighlightedArea(currentItem.GetSprinklerTiles(), (int)validTile.X, (int)validTile.Y);
+                    AddTilesToHighlightedArea(GetModifiedSprinklerTiles(currentItem), (int)validTile.X, (int)validTile.Y);
 
                     similarObjects = GetSimilarObjectsInLocation("sprinkler");
                     foreach (StardewValley.Object next in similarObjects)
                     {
                         // Absolute tile positions
-                        AddTilesToHighlightedArea(next.GetSprinklerTiles());
+                        AddTilesToHighlightedArea(GetModifiedSprinklerTiles(next));
                     }
                 }
                 else if (itemName.IndexOf("bee house", StringComparison.OrdinalIgnoreCase) >= 0)
@@ -213,6 +213,41 @@ namespace UIInfoSuite.UIElements
                     _mutex.ReleaseMutex();
                 }
             }
+        }
+
+        private static List<Vector2> GetModifiedSprinklerTiles(StardewValley.Object obj)
+        {
+            var originalOutput = obj.GetSprinklerTiles();
+            if (originalOutput.Count > 0) return originalOutput;
+
+            if (string.Equals(obj.Name, "Prismatic Sprinkler", StringComparison.InvariantCultureIgnoreCase) ||
+                string.Equals(obj.Name, "Prismatic Scarecrow Sprinkler", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var radius = 3;
+
+                // taken from base game StardewValley.Object.GetSprinklerTiles()
+                // the real fix would have been using Harmony to patch StardewValley.Object.GetBaseRadiusForSprinkler
+                // but then the whole game logic would be changed (e.g. IsSprinkler and further), considering PrismaticTools
+                // relies heavily on Harmony patch-logic would be too great of a hassle for 
+                List<Vector2> tiles = new List<Vector2>();
+                int i = (int)obj.TileLocation.X - radius;
+                while ((float)i <= obj.TileLocation.X + (float)radius)
+                {
+                    int y = (int)obj.TileLocation.Y - radius;
+                    while ((float)y <= obj.TileLocation.Y + (float)radius)
+                    {
+                        if (i != 0 || y != 0)
+                        {
+                            tiles.Add(new Vector2((float)i, (float)y));
+                        }
+                        y++;
+                    }
+                    i++;
+                }
+                return tiles;
+            }
+
+            return new List<Vector2>();
         }
 
         private List<StardewValley.Object> GetSimilarObjectsInLocation(string nameContains)
