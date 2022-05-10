@@ -113,6 +113,11 @@ namespace UIInfoSuite.UIElements
                     int numHearts = friendshipValues.Points / 250;
                     int yPosition = Game1.activeClickableMenu.yPositionOnScreen + 130 + yOffset;
                     DrawEachIndividualSquare(numHearts, pointsToNextHeart, yPosition);
+
+                    var txt = $"({friendshipValues.Points} FP)";
+
+                    var bounds = Game1.smallFont.MeasureString(txt);
+                    Game1.spriteBatch.DrawString(Game1.smallFont, txt, new Vector2(Game1.activeClickableMenu.xPositionOnScreen + 320, yPosition - (bounds.Y - 10)), Game1.textColor);
                 }
 
                 yOffset += 112;

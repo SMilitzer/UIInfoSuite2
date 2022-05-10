@@ -36,6 +36,9 @@ namespace UIInfoSuite.UIElements
         private static readonly Color Luck4Color = new Color(255, 255, 255, 255);
         private static readonly Color Luck5Color = new Color(255, 155, 155, 255);
         private static readonly Color Luck6Color = new Color(165, 165, 165, 204);
+
+        private static readonly double LuckMinValue = -0.1;
+        private static readonly double LuckMaxValue = 0.1;
         #endregion
 
         #region Lifecycle
@@ -141,12 +144,21 @@ namespace UIInfoSuite.UIElements
                         break;
                 }
 
+                _hoverText.Value += GetLuckPercentage();
+
                 // Rewrite the text, but keep the color
                 if (ShowExactValue)
                 {
                     _hoverText.Value = string.Format(_helper.SafeGetString(LanguageKeys.DailyLuckValue), Game1.player.DailyLuck.ToString("N3"));
                 }
             }
+        }
+
+        private string GetLuckPercentage()
+        {
+            var currentLuck = Game1.player.DailyLuck;
+            var normalized = Math.Round((currentLuck - LuckMinValue) / (LuckMaxValue - LuckMinValue) * 100);
+            return $" ({normalized:0}%)";
         }
 
         private void OnWarped(object sender, WarpedEventArgs e)
